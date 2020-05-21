@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todoapp/model/todo.dart';
 
 void main() {
   runApp(MyApp());
@@ -8,12 +9,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Todo App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Todo App'),
     );
   }
 }
@@ -28,13 +29,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final List<Todo> _todoList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -42,22 +37,28 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
+      body: ListView.builder(
+          itemCount: _todoList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Card(
+              color: Colors.white,
+              elevation: 2.0,
+              child: ListTile(
+                leading: CircleAvatar(
+                  child: Text("A"),
+                ),
+                title: Text(_todoList[index].title),
+                subtitle: Text(_todoList[index].description),
+              ),
+            );
+          }),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () => {
+          setState(() {
+            _todoList.add(Todo(
+                "ABC " + _todoList.length.toString(), "description", true));
+          })
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
