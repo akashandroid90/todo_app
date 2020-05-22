@@ -1,11 +1,12 @@
+import 'package:todoapp/contstants/app_constants.dart';
 import 'package:todoapp/model/todo.dart';
 
 class TodoState {
-  final List<Todo> _todoList;
+  List<Todo> todoList;
+  bool isLoading;
+  String errorMessage;
 
-  TodoState(this._todoList);
-
-  List<Todo> get todoList {
-    return List.from(_todoList);
-  }
+  TodoState({this.todoList = AppConstants.list,
+    this.errorMessage = "",
+    this.isLoading = false});
 }

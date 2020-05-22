@@ -9,15 +9,23 @@ class TodoList extends StatelessWidget {
     return ListView.builder(
         itemCount: todoList.length,
         itemBuilder: (BuildContext context, int index) {
+          final todo = todoList[index];
           return Card(
             color: Colors.white,
             elevation: 2.0,
             child: ListTile(
               leading: CircleAvatar(
-                child: Text("A"),
+                backgroundColor: todo.completed ? Colors.green : Colors.red,
+                child: Text(
+                  todo.id.toString(),
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-              title: Text(todoList[index].title),
-              subtitle: Text(todoList[index].description),
+              title: Text(
+                todo.title,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text("User: ${todo.userId}"),
             ),
           );
         });
