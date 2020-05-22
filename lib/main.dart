@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todoapp/model/todo.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todoapp/bloc/todo_bloc.dart';
+import 'package:todoapp/pages/todo_list.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,39 +31,28 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Todo> _todoList = [];
-
+  final bloc = TodoBloc();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: ListView.builder(
-          itemCount: _todoList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Card(
-              color: Colors.white,
-              elevation: 2.0,
-              child: ListTile(
-                leading: CircleAvatar(
-                  child: Text("A"),
-                ),
-                title: Text(_todoList[index].title),
-                subtitle: Text(_todoList[index].description),
-              ),
-            );
-          }),
+      body: BlocProvider(
+        create: (_) => bloc,
+        child: TodoList(),
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {
-          setState(() {
-            _todoList.add(Todo(
-                "ABC " + _todoList.length.toString(), "description", true));
-          })
-        },
+        onPressed: () => {bloc.loadData()},
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: Icon(Icons.refresh),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    bloc.close();
+    super.dispose();
   }
 }
