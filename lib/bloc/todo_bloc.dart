@@ -35,7 +35,6 @@ class TodoBloc extends Bloc<dynamic, TodoState> {
     add(true);
     http
         .get(AppConstants.base_url + "todos")
-//        .catchError(onError)
         .then((value) => json.decode(value.body) as List)
         .then(
             (value) => value.map<Todo>((data) => Todo.fromJson(data)).toList())
