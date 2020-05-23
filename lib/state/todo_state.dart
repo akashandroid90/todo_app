@@ -4,9 +4,10 @@ import 'package:todoapp/model/todo.dart';
 class TodoState {
   List<Todo> todoList;
   bool isLoading;
-  String errorMessage;
+  bool showError;
 
-  TodoState({this.todoList = AppConstants.list,
-    this.errorMessage = "",
-    this.isLoading = false});
+  TodoState(
+      {this.todoList = AppConstants.list,
+      this.showError = false,
+      this.isLoading = false});
 }

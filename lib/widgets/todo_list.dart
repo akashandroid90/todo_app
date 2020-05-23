@@ -25,7 +25,7 @@ class TodoList extends StatelessWidget {
                 todo.title,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              subtitle: Text("User: ${todo.userId}"),
+              subtitle: Text("Completed: ${todo.completed}"),
             ),
           );
         });

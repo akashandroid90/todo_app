@@ -5,10 +5,6 @@ import 'package:todoapp/state/todo_state.dart';
 import 'package:todoapp/widgets/todo_list.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -28,7 +24,8 @@ class _MyHomePageState extends State<MyHomePage> {
       create: (_) => _bloc,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          centerTitle: true,
+          title: Text("Todo List"),
         ),
         body: BlocBuilder(
           bloc: _bloc,
@@ -37,22 +34,51 @@ class _MyHomePageState extends State<MyHomePage> {
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : state.errorMessage.length > 0
+                : state.showError
                     ? Center(
-                        child: Text(
-                          state.errorMessage,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 40.0, fontWeight: FontWeight.bold),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              "Something went wrong",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 25.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "Give it another try",
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            FlatButton(
+                              child: Text(
+                                "RELOAD",
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 15.0),
+                              ),
+                              onPressed: _bloc.loadData,
+                            )
+                          ],
                         ),
                       )
                     : TodoList();
           },
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => {_bloc.loadData()},
-          tooltip: 'Refresh',
-          child: Icon(Icons.refresh),
+        floatingActionButton: BlocBuilder(
+          bloc: _bloc,
+          builder: (BuildContext context, TodoState state) {
+            return Visibility(
+                visible: _bloc.state.todoList.length > 0,
+                child: FloatingActionButton(
+                  onPressed: _bloc.loadData,
+                  tooltip: 'RELOAD',
+                  child: Icon(Icons.refresh),
+                ));
+          },
         ),
       ),
     );
